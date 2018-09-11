@@ -1,0 +1,9 @@
+struct node{
+  node * next;
+  int data;
+} typedef node;
+
+node create_node(int data, node * head);
+  
+
+void ll_push(node * head, int data);

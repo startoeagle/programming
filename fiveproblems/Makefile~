@@ -1,0 +1,2 @@
+p5: p5.o
+	gcc p.5 -o p5 -Wall
