@@ -15,3 +15,7 @@ void city_push(city * c, building * b);
 void city_merge(city * c, city * c2);
 building * building_create(int data[3]);
 void city_free(city * c);
+
+// need to create a skyline data type, and additional functions assumed in
+// find_skyline
+
