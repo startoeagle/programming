@@ -1,4 +1,5 @@
 #include "skyline.h"
+#include <stdio.h>
 
 int main(){
   int buildings[8][3] = {{1, 11, 5}, {2, 6, 7}, {3, 13, 9}, 
@@ -7,10 +8,20 @@ int main(){
 
   city c[1];
   city_init(c);
-  for (int i=0; i<8; i++){
+  for (int i=7; i>=0; i--){
     city_push(c, building_create(buildings[i]));
   }
+city_print(c);
+#ifdef DEBUG
+  
+  printf("sizeof(building) = %lu\n", sizeof(building));
+  
+#endif
+  skyline * skyline = find_skyline(c);
+  skyline_print(skyline);
 
-  city_free(c);
+  skyline_free(skyline);
+  
+
   return 0;
 }
