@@ -1,4 +1,0 @@
-longestpal: longestpal.o
-	gcc longestpal.c -Wall -o longestpal 
-dblongestpal: longestpal.o
-	gcc longestpal.c -Wall -o longestpal -g

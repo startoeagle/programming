@@ -1,2 +1,0 @@
-all: ll.o main.o
-	gcc main.c ll.c -Wall -o main main.o ll.o

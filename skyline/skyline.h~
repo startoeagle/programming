@@ -1,4 +1,0 @@
-typedef struct buidling_t{
-  int ht;
-  int left, right;
-}
