@@ -1,25 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 
 #define MAX_NUMBER 10000
 
 int missing(int arr[], unsigned int len);
+void print_array(int arr[], unsigned int length);
+
 int main(){
   int arr[MAX_NUMBER];
-  int r;
+  int r, value;
   char c;
   int i = 0;
-  r = scanf("%c", &c);
+  char delims[] = " \t\r\n";
+   
+  char s[MAX_NUMBER];
+  fgets(s, MAX_NUMBER, stdin);
+  char * val;
+  val = strtok(s, delims);
+  i = 0;
+  r = sscanf(val, "%d", &arr[i]);
+
   while(r){
-    if (c == '\n')
-      break;
-    else if (isdigit(c)){
-      arr[i] = (int) c -'0';
-      i++;
-    }
-    r = scanf("%c", &c);
+    i++;
+    val = strtok(NULL, delims);
+    r = (val == NULL) ? 0 : sscanf(val, "%d", &arr[i]);
   }
+  
+  
+  print_array(arr, i);
+  return 0;
   unsigned int len = i;
   int missing_number = missing(arr, len);
   if (missing_number)
@@ -30,12 +41,7 @@ int main(){
 }
 
 int missing(int arr[], unsigned int len){
-  printf("(");
-  for(int i=0; i<len; i++){
-    printf("%d ", arr[i]);
-  }
-  printf(")");
-  printf("\n");
+  print_array(arr, len);
   if (len == 1)
     return arr[0];
   else if (len == 2)
@@ -43,20 +49,30 @@ int missing(int arr[], unsigned int len){
   else{
     // split up the array into two arrays
     int arr_new[len/2];
-    for (int i = len/2; i<len; i++)
-      arr_new[i-len/2] = arr[i];
+    for (int i = len - len/2; i<len; i++)
+      arr_new[i-(len - len/2)] = arr[i];
 
     int m1 = missing(arr, len - len/2);
-    printf("m1 = %d\n", m1);
-    printf("m2 = %d\n", m2);
+    
     int m2 = missing(arr_new, len/2);
-    if(len/2 == 1)
-      // int this case we need to check if the missing number
-      // is between the two subarrays
-      return arr[len-len/2-1] - m2 > 1 ? m2 - 1 : 0 + m1;
-    else
-      return m1 + m2;
+    if (len)
+    if (len/2 == 1)
+      return m2 - arr[len -len/2 -1]  > 1 ? m2 - 1 : 0 + m1;
+    
+    return m1 + m2;
 	
   }
      
+}
+
+void print_array(int arr[], unsigned int length){
+  printf("(");
+  for(unsigned int i = 0; i<length; i++){
+    if(i==length-1)
+      printf("%d", arr[i]);
+    else
+      printf("%d, ", arr[i]);
+  }
+  printf(")");
+  printf("\n");
 }
