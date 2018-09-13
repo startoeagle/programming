@@ -28,11 +28,8 @@ int main(){
     r = (val == NULL) ? 0 : sscanf(val, "%d", &arr[i]);
   }
   
-  
   print_array(arr, i);
-  return 0;
-  unsigned int len = i;
-  int missing_number = missing(arr, len);
+  int missing_number = missing(arr, i);
   if (missing_number)
     printf("The missing number is %d\n", missing_number);
   else
@@ -41,7 +38,6 @@ int main(){
 }
 
 int missing(int arr[], unsigned int len){
-  print_array(arr, len);
   if (len == 1)
     return arr[0];
   else if (len == 2)
@@ -55,14 +51,11 @@ int missing(int arr[], unsigned int len){
     int m1 = missing(arr, len - len/2);
     
     int m2 = missing(arr_new, len/2);
-    if (len)
     if (len/2 == 1)
       return m2 - arr[len -len/2 -1]  > 1 ? m2 - 1 : 0 + m1;
     
     return m1 + m2;
-	
   }
-     
 }
 
 void print_array(int arr[], unsigned int length){
