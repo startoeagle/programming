@@ -32,7 +32,6 @@ void list_free(list * l){
 }
 
 void push(list * l, unsigned int size){
-
   node * tmp = l->head;
   l->head = node_init(size);
   l->head->next = tmp;
@@ -99,6 +98,7 @@ int main(const int argc, char  * argv[]){
     printf("pole %d \n", i+1);
     print(&poles[i]);
   }
+  
   hanoi(poles, poles+1, poles+2, n);
 
   for (i = 0; i<3; i++){
