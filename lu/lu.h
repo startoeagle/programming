@@ -19,7 +19,8 @@ matrix * tri_matrix_init(double * values, int size);
 void  matrix_insert(matrix * m, double val, int row, int col);
 double matrix_value(matrix * m, int row, int col);
 void matrix_free(matrix * m);
-matrix * matrix_multiply(matrix * a, matrix * b);
+matrix * matrix_multiply(matrix * a, matrix * b, matrix * res);
+matrix * matrix_transpose(matrix * m, matrix * res);
 
 void matrix_print(matrix * m);
 

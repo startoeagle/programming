@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "lu.h"
+//#include "lu.h"
+#include "solve.h"
 
 int main(){
   int nr_row = 3;
@@ -28,20 +29,46 @@ int main(){
   printf("P = \n");
   matrix_print(LU->p);
   printf("\n");
-  
-  matrix_print(matrix_multiply(LU->p, m));
+
+  matrix * c = matrix_init(NULL, nr_col, nr_col);
+  matrix_print(matrix_multiply(LU->p, m, c));
   printf("\n");
   
-  matrix_print(matrix_multiply(LU->l, LU->u));
+  matrix_print(matrix_multiply(LU->l, LU->u, c));
 
-  
-  matrix_free(m);
+  matrix_free(c);
   lu_free(LU);
 
-  if (!m)
-    printf("m is null\n");
-  else
-    printf("m is not null\n");
-    
+  double rhs[] = {1,5,2};
+  c = matrix_init(NULL, nr_row, 1);
+  matrix * b = matrix_init(NULL, 3, 1);
+  for (int i = 0; i < nr_row; i++)
+    matrix_insert(c, rhs[i], i, 0);
+  printf("c = \n");
+  matrix_print(c);
+
+  /* printf("\ntranposing...\n"); */
+  /* matrix * temp = matrix_init(NULL, m->nr_col, m->nr_row); */
+  /* temp = matrix_transpose(m, temp); */
+  /* matrix_print(temp); */
+  /* matrix_free(temp); */
+  /* printf("\n"); */
+ 
+  
+  printf("solving\n");
+  solve(m, b, c);
+  printf("solved\n");
+
+  matrix_print(m);
+  matrix_print(b);
+  matrix_print(c);
+
+  printf("Does the solution work?\n Mb = \n");
+  matrix_print(matrix_multiply(m,b,c));
+
+  matrix_free(c); 
+  matrix_free(b); 
+  matrix_free(m);
+  
   return 0;
 }

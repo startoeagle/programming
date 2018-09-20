@@ -1,8 +1,8 @@
 #include "lu.h"
 
 matrix * matrix_init(double * values, int nr_row, int nr_col){
-  matrix * res = malloc(sizeof(matrix));
-  res->values = (double *) malloc(sizeof(double)*nr_row*nr_col);
+matrix * res = (matrix *) malloc(sizeof(matrix));
+  res->values = (double *) malloc(sizeof(double*)*nr_row*nr_col);
   res->nr_row = nr_row;
   res->nr_col = nr_col;
   if (values == NULL){
@@ -18,7 +18,7 @@ matrix * matrix_init(double * values, int nr_row, int nr_col){
 
 matrix * tri_matrix_init(double * values, int size){
   matrix * res = malloc(sizeof(matrix));
-  res->values = (double *) malloc(sizeof(double)*(size*(size+1))/2);
+  res->values = (double *) malloc(sizeof(double*)*(size*(size+1))/2);
   if (values == NULL){
     // set all values to zero
     for (int i = 0; i < size; i++)
@@ -45,20 +45,27 @@ void matrix_free(matrix * m){
   m = NULL;
 }
 
-matrix * matrix_multiply(matrix * a, matrix * b){
+matrix * matrix_multiply(matrix * a, matrix * b, matrix * res){
   if (a->nr_col != b->nr_row)
     perror("Dimension missmatch\n");
-
-  matrix * res = matrix_init(NULL, a->nr_row, b->nr_col);
+  
   double sum;
   for (int i=0; i<a->nr_row; i++)
-    for (int j=0; j<a->nr_col; j++){
+    for (int j=0; j<b->nr_col; j++){
       sum = 0;
       for (int k=0; k<a->nr_col; k++)
 	sum += matrix_value(a, i, k) * matrix_value(b, k, j);
       
       matrix_insert(res, sum, i, j);
     }
+
+  return res;
+}
+
+matrix * matrix_transpose(matrix * m, matrix * res){
+  for (int i = 0; i < m->nr_row; i++)
+    for (int j = 0; j < m->nr_col; j++)
+      matrix_insert(res, matrix_value(m, i, j), j, i);
 
   return res;
 }
@@ -134,7 +141,8 @@ lu_pair * lu(matrix * m){
   // pivot m
   lu->p  = pivot(m, lu->p);
 
-  matrix * mprime = matrix_multiply(lu->p, m);
+  matrix * mprime = matrix_init(NULL, m->nr_col, m->nr_col);
+  mprime = matrix_multiply(lu->p, m, mprime);
 
   // decompose
   int i, j, k;
@@ -163,6 +171,7 @@ lu_pair * lu(matrix * m){
 								     
     }
 
+  matrix_free(mprime);
   return lu;
   
 }
