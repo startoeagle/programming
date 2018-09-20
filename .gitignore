@@ -5,3 +5,7 @@
 *.o
 *~
 proj_euler/*
+
+## Do not include blas and lapack
+lapack/*
+blas/*
