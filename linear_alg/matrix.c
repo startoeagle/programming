@@ -3,11 +3,11 @@
 #ifdef COL_MAJ
 matrix * matrix_init(double * values, int nr_row, int nr_col){
   matrix * res = (matrix *) malloc(sizeof(matrix));
-  res->values = (double *) malloc(sizeof(double*)*nr_row*nr_col);
   res->nr_row = nr_row;
   res->nr_col = nr_col;
-  if (values == NULL){
-    // set all values to zero
+  if (values == NULL){    // set all values to zero
+    res->values = (double *) malloc(sizeof(double*)*nr_row*nr_col);
+     
     for (int i = 0; i < nr_row; i++)
       for(int j = 0; j < nr_col; j++)
 	*(res->values + i*nr_col + j) = 0;

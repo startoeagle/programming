@@ -28,17 +28,20 @@ int main(){
   matrix_print(bm);
   solve(am, bm, sol);
 
+  // A does not exist any more!
   double A2[3][3] = {{1,2,3},{4,5,1},{3,5,2}};
 
   am->values = *A2;
   printf("The A matrix:\n");
   matrix_print(am);
-  printf("The solution array:\n");
-  matrix_print(sol);
-
   matrix * res = matrix_init(NULL, bm->nr_row, bm->nr_col);
   matrix_multiply(am, sol, res);
   matrix_print(res);
+
+  free(am);
+  free(bm);
+  matrix_free(sol);
+  matrix_free(res);
   return 0;
 }
 

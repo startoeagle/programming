@@ -14,6 +14,7 @@ void solve(matrix * a, matrix * b, matrix *  sol){
     printf("Succes!\n");
   info = LAPACKE_dgesv(LAPACK_COL_MAJOR,
 		       n, nrhs, a->values, lda, ipiv, sol->values, ldb);
+  free(ipiv);
   matrix_print(a);
   if (info)
     printf("Got the error: info = %d\n", info);
