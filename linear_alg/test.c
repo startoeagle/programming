@@ -3,40 +3,35 @@
 #include "solve.h"
 
 int main(){
-  double A[5][3] = {{1,2,3},{4,5,1},{3,5,2},{4,1,4},{2,5,3}};
-  double b[5][2] = {{-10,12},{14,16},{18,-3},{14,12},{16,16}};
+  double A[3][3] = {{1,2,3},{4,5,1},{3,5,2}};
+  // double b[5][2] = {{-10,12},{14,16},{18,-3},{14,12},{16,16}};
+  double b [3][1] = {{6},{3},{8}};
   
   /* Initialization */
-  int m,n,nrhs, lda, ldb;
-  m = 5;
+  int n,nrhs, lda, ldb;
   n = 3;
-  nrhs = 2;
-  lda = 5;
-  ldb = 5;
- 
-  /* Print Entry Matrix */
-  //print_matrix_colmajor( "Entry Matrix A", m, n, *A, lda );
-  /* Print Right Rand Side */
-  //print_matrix_colmajor( "Right Hand Side b", n, nrhs, *b, ldb );
-  //printf( "\n" );
+  nrhs = 1;
+  lda = 3;
+  ldb = 3;
  
   /* Executable statements */
-  printf( "LAPACKE_dgels (col-major, high-level) Example Program Results\n" );
   /* Solve least squares problem*/
 
   matrix *am, *bm, *sol;
-  am = matrix_init(*A, m, n);
+  am = matrix_init(*A, lda, n);
   bm = matrix_init(*b, ldb, nrhs);
   sol = matrix_init(NULL, am->nr_row, bm->nr_col);
+  printf("Solving Ax = b\n");
+  printf("A = \n");
+  matrix_print(am);
+  printf("b = \n");
+  matrix_print(bm);
   solve(am, bm, sol);
- 
-  /* Print Solution */
-  //print_matrix_colmajor( "Solution", n, nrhs, *b, ldb );
-  //printf( "\n" );
 
-  matrix_free(am);
-  matrix_free(bm);
-  matrix_free(sol);
+  am->values = *A;
+  matrix * res = matrix_init(NULL, bm->nr_row, bm->nr_col);
+  matrix_multiply(am, sol, res);
+  matrix_print(sol);
   return 0;
 }
 

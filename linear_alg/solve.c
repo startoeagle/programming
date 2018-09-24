@@ -3,20 +3,23 @@
 void solve(matrix * a, matrix * b, matrix *  sol){
   // set up for wraper for LAPACKE_dgels
 
-  double *A, *B;
-  A = a->values;
-  B = b->values;
-  lapack_int info, m,n,lda,ldb,nrhs;
-  m = a->nr_row;
+  lapack_int info, n,lda,ldb,nrhs, *ipiv;
+  lda = a->nr_row;
   n = a->nr_col;
-  lda = m;
   ldb = b->nr_row;
   nrhs = b->nr_col;
-
-  matrix_copy(sol, b);
-
-  info = LAPACKE_dgels(LAPACK_COL_MAJOR, 'N', m,n,nrhs, A, lda, sol->values, ldb);
+  ipiv = malloc(sizeof(double)*lda);
+  printf("Trying to copy memory\n");
+  if(matrix_copy(sol, b))
+    printf("Succes!\n");
+  info = LAPACKE_dgesv(LAPACK_COL_MAJOR,
+		       n, nrhs, a->values, lda, ipiv, sol->values, ldb);
+  matrix_print(a);
   if (info)
     printf("Got the error: info = %d\n", info);
+  else{
+    printf("The solution was \n");
+    matrix_print(sol);
+  }
 
 }
