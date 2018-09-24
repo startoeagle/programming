@@ -2,9 +2,11 @@
 !*.*
 !*/
 !Makefile
+!*.c
 #*#
 *.o
 *~
+notes.txt
 proj_euler/*
 
 ## Do not include blas and lapack
