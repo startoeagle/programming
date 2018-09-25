@@ -3,7 +3,7 @@ DIR =/home/anton/Documents/programming/lapack/lapack-3.8.0/
 include $(DIR)make.inc
 
 # /LAPACKE/include/ can really be anything
-LIBRARIES = $(DIR)$(LAPACKELIB) $(DIR)$(LAPACKLIB) $(DIR)LAPACKE/include/$(BLASLIB)  $(DIR)LAPACKE/include/$(CBLASLIB)
+LIBRARIES = $(DIR)$(LAPACKELIB) $(DIR)$(LAPACKLIB) $(DIR)LAPACKE/include/$(CBLASLIB) $(DIR)LAPACKE/include/$(BLASLIB)
 
 # Following the format of the examples in $(DIR)LAPACKE/example/
 test: test.o matrix.o solve.o $(LIBRARIES)
@@ -17,7 +17,7 @@ cleanexe:
 
 ## Define DB as -g to use debugger flags
 .c.o:
-	$(CC)  $(CFLAGS) -I$(DIR)CBLAS/include -I$(DIR)BLAS/include -I$(DIR)LAPACKE -I$(DIR)LAPACKE/include -c -o $@ $< -Wall $(DB) -D ROW_MAJ -lgslcblas
+	$(CC)  $(CFLAGS) -I$(DIR)CBLAS/include -I$(DIR)BLAS/include -I$(DIR)LAPACKE -I$(DIR)LAPACKE/include -c -o $@ $< -Wall $(DB) -D ROW_MAJ 
 
 
 db: 
