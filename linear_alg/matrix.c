@@ -66,6 +66,14 @@ matrix * matrix_multiply(matrix * a, matrix * b, matrix * c){
 }
 #endif
 
+matrix * matrix_insert_col(matrix * a, vector *b, int col){
+  for(int i = 0; i<a->nr_row; i++){
+    matrix_insert(a, vector_value(b, i), i, col);
+  }
+  return a;
+}
+
+
 vector * vector_init(double * values, int len){
   vector * res = (vector *) malloc(sizeof(vector));
   res->len = len;
@@ -74,7 +82,14 @@ vector * vector_init(double * values, int len){
     for (int i = 0; i<len; i++)
       res->values[i] = 0;
   }
+  else
+    res->values = values;
   return res;
+}
+
+void vector_free(vector * m){
+  free(m->values);
+  free(m);
 }
 void vector_insert(vector * m, double val, int pos){
   m->values[pos] = val;
@@ -91,3 +106,11 @@ vector * mv_multiply(matrix * a, vector * b, vector * res){
   return res;
 }
 #endif
+
+
+void vector_print(vector * m){
+  for (int i = 0; i < m->len; i++){
+    printf("[%f]\n", vector_value(m, i));
+  }
+  printf("\n");
+}

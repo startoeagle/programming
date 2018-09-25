@@ -21,10 +21,9 @@ cleanexe:
 
 
 db: 
-	DB=-g
-	make test
+	make test 	DB=-g
 ## from make.inc
-# BLASLIB      = ../../librefblas.a
+# BLASLIB      = ../../librefblas.a	
 # CBLASLIB     = ../../libcblas.a
 # LAPACKLIB    = liblapack.a
 # TMGLIB       = libtmglib.a
