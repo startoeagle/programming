@@ -27,6 +27,8 @@ int main(){
   printf("b = \n");
   matrix_print(bm);
   solve(am, bm, sol);
+  printf("x = \n");
+  matrix_print(sol);
 
   // A does not exist any more!
   double A2[3][3] = {{1,2,3},{4,5,1},{3,5,2}};
@@ -34,9 +36,12 @@ int main(){
   am->values = *A2;
   printf("The A matrix:\n");
   matrix_print(am);
+  matrix_insert(am, 1, 0, 2);
+  matrix_print(am);
   matrix * res = matrix_init(NULL, bm->nr_row, bm->nr_col);
   matrix_multiply(am, sol, res);
   matrix_print(res);
+  matrix_print(sol);
 
   free(am);
   free(bm);

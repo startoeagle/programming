@@ -9,18 +9,14 @@ void solve(matrix * a, matrix * b, matrix *  sol){
   ldb = b->nr_row;
   nrhs = b->nr_col;
   ipiv = malloc(sizeof(double)*lda);
-  printf("Trying to copy memory\n");
-  if(matrix_copy(sol, b))
-    printf("Succes!\n");
-  info = LAPACKE_dgesv(LAPACK_COL_MAJOR,
+  if(!matrix_copy(sol, b))
+    printf("Could not copy matrix momery!\n");
+#ifdef ROW_MAJ
+  info = LAPACKE_dgesv(LAPACK_ROW_MAJOR,
 		       n, nrhs, a->values, lda, ipiv, sol->values, ldb);
+#endif
   free(ipiv);
-  matrix_print(a);
   if (info)
     printf("Got the error: info = %d\n", info);
-  else{
-    printf("The solution was \n");
-    matrix_print(sol);
-  }
-
+  
 }

@@ -1,12 +1,12 @@
 #include "matrix.h"
 
-#ifdef COL_MAJ
+#ifdef ROW_MAJ
 matrix * matrix_init(double * values, int nr_row, int nr_col){
   matrix * res = (matrix *) malloc(sizeof(matrix));
   res->nr_row = nr_row;
   res->nr_col = nr_col;
   if (values == NULL){    // set all values to zero
-    // assuming that the values are allocated prior if not NULL.
+    // assuming that values are allocated prior if not NULL.
     res->values = (double *) malloc(sizeof(double*)*nr_row*nr_col);
      
     for (int i = 0; i < nr_row; i++)
@@ -19,7 +19,7 @@ matrix * matrix_init(double * values, int nr_row, int nr_col){
 }
 #endif
 
-#ifdef COL_MAJ
+#ifdef ROW_MAJ
 void  matrix_insert(matrix * m, double values, int row, int col){
   m->values[row*(m->nr_col) + col] = values;
 }
@@ -35,7 +35,7 @@ void matrix_free(matrix * m){
   m = NULL;
 }
 
-#ifdef COL_MAJ
+#ifdef ROW_MAJ
 void matrix_print(matrix * m){
   for (int i = 0; i < m->nr_row; i++){
     printf("[");
@@ -47,7 +47,7 @@ void matrix_print(matrix * m){
 }
 #endif
 
-#ifdef COL_MAJ
+#ifdef ROW_MAJ
 matrix *  matrix_copy(matrix * dst, matrix * src){
   // copies the data from src to dst
   for (int i = 0; i< dst->nr_row; i++)
@@ -57,11 +57,37 @@ matrix *  matrix_copy(matrix * dst, matrix * src){
 }
 #endif
 
-#ifdef COL_MAJ
+#ifdef ROW_MAJ
 matrix * matrix_multiply(matrix * a, matrix * b, matrix * c){
-  cblas_dgemm(CblasColMajor, CblasNoTrans, CblasNoTrans,
+  cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans,
   	      a->nr_row, b->nr_col, a->nr_col, 1.0, a->values,
   	      a->nr_row, b->values, b->nr_row, 0.0, c->values, c->nr_row);
   return c;
+}
+#endif
+
+vector * vector_init(double * values, int len){
+  vector * res = (vector *) malloc(sizeof(vector));
+  res->len = len;
+  if (values == NULL){
+    res->values = (double *) malloc(sizeof(double)*res->len);
+    for (int i = 0; i<len; i++)
+      res->values[i] = 0;
+  }
+  return res;
+}
+void vector_insert(vector * m, double val, int pos){
+  m->values[pos] = val;
+}
+double vector_value(vector * m, int pos){
+  return m->values[pos];
+}
+
+#ifdef ROW_MAJ
+vector * mv_multiply(matrix * a, vector * b, vector * res){
+  cblas_dgemv(CblasRowMajor, CblasNoTrans,
+	      a->nr_row, a->nr_col, 1.0, a->values, a->nr_row,
+	      b->values, 1, 0.0, res->values, 1);
+  return res;
 }
 #endif
